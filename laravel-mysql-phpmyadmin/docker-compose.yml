@@ -1,0 +1,65 @@
+services:
+  custom-laravel-php:
+    container_name: laravel-app
+    build:
+      context: .
+      dockerfile: php.Dockerfile
+    image: simple-laravel-app-custom-laravel-php:latest
+    restart: unless-stopped
+    networks:
+      - laravel-net
+    volumes:
+      - .:/var/www/html
+    environment:
+      DB_HOST: laravel-db
+      DB_DATABASE: laravel
+      DB_USERNAME: root
+      DB_PASSWORD: secret
+
+  nginx:
+    container_name: laravel-web
+    image: nginx:latest
+    restart: unless-stopped
+    volumes:
+      - .:/var/www/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8000:80"
+    networks:
+      - laravel-net
+    depends_on:
+      - custom-laravel-php
+
+  mysql:
+    container_name: laravel-db
+    image: mysql:8.0
+    restart: unless-stopped
+    volumes:
+      - laravel_db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: laravel
+    networks:
+      - laravel-net
+
+  phpmyadmin:
+    container_name: laravel-pma
+    image: phpmyadmin:latest
+    restart: unless-stopped
+    environment:
+      PMA_HOST: laravel-db
+      PMA_USER: root
+      PMA_PASSWORD: secret
+    ports:
+      - "8081:80"
+    networks:
+      - laravel-net
+    depends_on:
+      - mysql
+
+networks:
+  laravel-net:
+    driver: bridge
+
+volumes:
+  laravel_db_data:

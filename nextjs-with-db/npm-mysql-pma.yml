@@ -1,0 +1,41 @@
+services:
+  node:
+    container_name: node-app
+    image: node:24.16.0-alpine
+    networks:
+      - node-net
+    ports:
+      - "80:3000"
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: sh -c "npm install && npm run dev"
+
+  mysql:
+    container_name: node-db
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: nextdb
+      MYSQL_ROOT_PASSWORD: secret
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - node-net
+
+  phpmyadmin:
+    container_name: node-pma
+    image: phpmyadmin:latest
+    environment:
+      PMA_HOST: node-db
+      PMA_USER: root
+      PMA_PASSWORD: secret
+    networks:
+      - node-net
+    ports:
+      - "8080:80"
+
+networks:
+  node-net:
+    driver: bridge
+volumes:
+  db_data:

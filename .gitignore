@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Next.js
+.next/
+out/
+build/
+*.tsbuildinfo
+
+# Laravel / PHP
+storage/logs/*.log
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/pail/*
+.phpunit.result.cache
+
+# Environment files
+.env
+.env.backup
+.env.production
+.env.local
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.pem
