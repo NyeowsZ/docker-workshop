@@ -1,6 +1,6 @@
 FROM ubuntu:24.04
 
-ENV DEBIAN_FRONTEND=noninteractivee
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y \
 php-fpm php-cli php-mysql php-xml php-curl php-mbstring zip unzip curl

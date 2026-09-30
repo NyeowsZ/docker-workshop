@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: php.Dockerfile
-    image: simple-laravel-app-custom-laravel-php:latest
+    image: laravel-workshop-php:latest
     restart: unless-stopped
     networks:
       - laravel-net
@@ -12,9 +12,11 @@ services:
       - .:/var/www/html
     environment:
       DB_HOST: laravel-db
+      DB_PORT: 3306
       DB_DATABASE: laravel
       DB_USERNAME: root
       DB_PASSWORD: secret
+    entrypoint: ["sh", "/var/www/html/docker-entrypoint.sh"]
 
   nginx:
     container_name: laravel-web
